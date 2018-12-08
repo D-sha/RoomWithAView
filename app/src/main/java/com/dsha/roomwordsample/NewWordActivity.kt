@@ -9,10 +9,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 
-
+const val EXTRA_REPLY = "com.example.android.wordlistsql.REPLY"
 
 class NewWordActivity : AppCompatActivity() {
-    val EXTRA_REPLY = "com.example.android.wordlistsql.REPLY"
 
     private var mEditWordView: EditText? = null
 

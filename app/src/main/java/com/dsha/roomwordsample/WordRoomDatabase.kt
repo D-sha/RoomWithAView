@@ -3,18 +3,12 @@ package com.dsha.roomwordsample
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import android.arch.persistence.room.Room
-import android.os.AsyncTask.execute
 import android.arch.persistence.db.SupportSQLiteDatabase
-import android.support.annotation.NonNull
+import android.arch.persistence.room.Database
 import android.os.AsyncTask
-
-
-
-
-
+@Database(entities = [Word::class], version = 1, exportSchema = false)
 abstract class WordRoomDatabase : RoomDatabase () {
     abstract val wordDao: WordDao
-
 
     companion object {
         @Volatile
@@ -41,20 +35,18 @@ abstract class WordRoomDatabase : RoomDatabase () {
                 return null
             }
         }
-        fun getDatabase(context: Context): WordRoomDatabase? {
-            if (INSTANCE == null) {
-                synchronized(WordRoomDatabase::class.java) {
-                    if (INSTANCE == null) {
-                        INSTANCE = Room.databaseBuilder(
+
+        private fun buildDatabase(context: Context): WordRoomDatabase {
+            return Room.databaseBuilder(
                             context.applicationContext,
                             WordRoomDatabase::class.java, "word_database"
                         ).addCallback(sRoomDatabaseCallback).build()
-                    }
-                }
+        }
+
+        fun getDatabase(context: Context): WordRoomDatabase {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
-            return INSTANCE
         }
     }
-
-
 }

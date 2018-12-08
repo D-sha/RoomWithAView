@@ -4,11 +4,10 @@ import android.app.Application
 import android.arch.lifecycle.LiveData
 import android.os.AsyncTask
 
-
 class WordRepository(application: Application) {
-    val wordRoomDataBase = WordRoomDatabase.getDatabase(application)
-    val wordDao: WordDao? = wordRoomDataBase?.wordDao
-    val allWords = wordDao?.getAllWords()
+    private val wordRoomDataBase = WordRoomDatabase.getDatabase(application)
+    private val wordDao: WordDao? = wordRoomDataBase.wordDao
+    private val allWords = wordDao?.getAllWords()
 
     fun rgetAllWords(): LiveData<List<Word>>? {
         return allWords
